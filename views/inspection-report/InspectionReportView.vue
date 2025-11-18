@@ -57,7 +57,10 @@ onMounted(() => { list(); });
     <a-table :columns="columns" :data-source="data" :pagination="false" :loading="isLoading" size="middle"
       :scroll="{ x: 900 }">
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'unqualifiedCount'">
+        <template v-if="column.key === 'productModelSN'">
+          {{ record.productModelSN }}<span v-if="record.batchNumber">/{{ record.batchNumber }}</span>
+        </template>
+        <template v-else-if="column.key === 'unqualifiedCount'">
           <a-tag :color="record.unqualifiedCount > 0 ? 'red' : 'green'">{{ record.unqualifiedCount }}</a-tag>
         </template>
         <template v-else-if="column.key === 'qualifiedCount'">

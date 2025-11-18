@@ -11,6 +11,7 @@ interface InspectionReportItem {
   qualifiedCount: number;
   unqualifiedCount: number;
   supplierName: string;
+  description?: string;
   inspectionDate: string; // ISO date
 }
 
@@ -40,13 +41,12 @@ export const useInspectionReportData = () => {
   const inputSupplierName = ref<string>('');
 
   const columns = [
-    { title: '物料编码', dataIndex: 'productModelSN', key: 'productModelSN' },
-    { title: '批次号', dataIndex: 'batchNumber', key: 'batchNumber' },
+    { title: '物料编码/批次号', dataIndex: 'productModelSN', key: 'productModelSN' },
+    { title: '产品型号', dataIndex: 'description', key: 'description' },
     { title: '检测总数', dataIndex: 'inspectionCount', key: 'inspectionCount' },
     { title: '合格数', dataIndex: 'qualifiedCount', key: 'qualifiedCount' },
     { title: '不合格数', dataIndex: 'unqualifiedCount', key: 'unqualifiedCount' },
     { title: '供应商', dataIndex: 'supplierName', key: 'supplierName' },
-    { title: '产品型号', dataIndex: 'description', key: 'description' },
     { title: '检验日期', dataIndex: 'inspectionDate', key: 'inspectionDate', customRender: ({ text }: { text: string }) => text ? dayjs(text).format('YYYY-MM-DD') : '' },
   ];
 
@@ -103,8 +103,8 @@ export const useInspectionReportData = () => {
       const worksheet = workbook.addWorksheet('全检报表');
 
       worksheet.columns = [
-        { width: 15 }, // 物料编码
-        { width: 15 }, // 批次号
+        { width: 25 }, // 物料编码/批次号
+        { width: 20 }, // 产品型号
         { width: 12 }, // 检验数量
         { width: 12 }, // 合格数
         { width: 12 }, // 不合格数
@@ -121,12 +121,16 @@ export const useInspectionReportData = () => {
       worksheet.addRow(['合格/不合格:', `${qualifiedTotal} / ${unqualifiedTotal}`, '', '', '', '', '']);
       worksheet.addRow(['导出日期:', currentDate, '', '', '', '', '']);
       worksheet.addRow(['', '', '', '', '', '', '']);
-      worksheet.addRow(['物料编码', '批次号', '检验数量', '合格数', '不合格数', '供应商', '检验日期']);
+      worksheet.addRow(['物料编码/批次号', '产品型号', '检验数量', '合格数', '不合格数', '供应商', '检验日期']);
 
       allData.forEach(item => {
+        const productAndBatch = item.productModelSN
+          ? item.productModelSN + (item.batchNumber ? `/${item.batchNumber}` : '')
+          : (item.batchNumber || '');
+
         worksheet.addRow([
-          item.productModelSN || '',
-          item.batchNumber || '',
+          productAndBatch,
+          item.description || '',
           item.inspectionCount ?? 0,
           item.qualifiedCount ?? 0,
           item.unqualifiedCount ?? 0,
