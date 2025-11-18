@@ -3,7 +3,7 @@ import { useAuthStore } from '@/pinia/useAuthStore';
 
 // Create an axios instance
 const axiosInstance = axios.create({
-    baseURL: '/api', // Replace with your API base URL
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/api', // 从环境变量读取API基础地址
     timeout: 10000, // Request timeout
     headers: { 'Content-Type': 'application/json' }
 });
