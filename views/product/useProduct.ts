@@ -57,7 +57,7 @@ export const useProductData = () => {
             width: 40,
         },
         {
-            title: 'SN',
+            title: '电机SN',
             dataIndex: 'sn',
             key: 'sn',
         },

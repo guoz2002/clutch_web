@@ -42,7 +42,7 @@ export const useProductionPlanData = () => {
             title: '厂家',
             dataIndex: 'manufacturer',
             key: 'manufacturer',
-            width: 150,
+            width: 250,
         },
         {
             title: '计划输入日期',

@@ -61,7 +61,7 @@ export const useDefectReportData = () => {
             customRender: ({ text }: { text: string }) => text ? dayjs(text).format('YYYY-MM-DD HH:mm:ss') : '',
         },
         {
-            title: '产品SN',
+            title: '电机SN',
             dataIndex: 'productSN',
             key: 'productSN',
         },
